@@ -1,0 +1,31 @@
+{
+  "name": "anydoor",
+  "version": "1.0.0",
+  "description": "Tiny Nodejs Static Web Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "fix": "eslint --fix"
+  },
+  "pre-commit": [
+    "fix",
+    "lint"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silvacheng/anydoor.git"
+  },
+  "author": "silva",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/silvacheng/anydoor/issues"
+  },
+  "homepage": "https://github.com/silvacheng/anydoor#readme",
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.11.1",
+    "nodemon": "^1.18.9",
+    "pre-commit": "^1.2.2"
+  }
+}

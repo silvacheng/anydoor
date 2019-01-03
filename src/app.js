@@ -26,6 +26,5 @@ const server = http.createServer((req, res) => {
 });
 server.listen(conf.port, conf.hostname, () => {
   const addr = `http://${conf.hostname}:${conf.port}`;
-  console.log(1111);
   console.info(`Server started at ${addr}`)
 })
