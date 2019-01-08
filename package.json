@@ -27,5 +27,8 @@
     "eslint": "^5.11.1",
     "nodemon": "^1.18.9",
     "pre-commit": "^1.2.2"
+  },
+  "dependencies": {
+    "handlebars": "^4.0.12"
   }
 }
