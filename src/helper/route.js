@@ -8,6 +8,8 @@ const tplPath = path.join(__dirname, '../template/dir.tpl');
 const config = require('../config/defaultConfig');
 const mime = require('./mine');
 const compress = require('./compress'); // 压缩文件
+const range = require('./ranger');
+const isFresh = require('./cache');
 const source = fs.readFileSync(tplPath);
 const template = Handlebars.compile(source.toString());
 
@@ -16,11 +18,20 @@ module.exports = async function (req, res, filePath) {
     const stats = await stat(filePath);
     if (stats.isFile()) {
       const contentType = mime(filePath);
-      res.statusCode = 200;
       res.setHeader('Content-Type', contentType);
       // 将文本以流的形式  返回
-      let rs = fs.createReadStream(filePath);
-      if(filePath.match(config.compress)) {
+      let rs;
+      const { code, start, end } = range(stats.size, req, res);
+
+      if (code === 200) {
+        res.statusCode = 200;
+        rs = fs.createReadStream(filePath);
+      } else {
+        res.statusCode = 216; // 部分内容
+        rs = fs.createReadStream(filePath, { start, end });
+      }
+
+      if (filePath.match(config.compress)) {
         rs = compress(rs, req, res);
       }
       rs.pipe(res);
