@@ -2,12 +2,25 @@ const http = require('http');
 const conf = require('./config/defaultConfig');
 const path = require('path');
 const route = require('./helper/route');
+const openUrl = require('./helper/openUrl');
+class Server {
+  constructor(config) {
+    this.conf = Object.assign({}, conf, config);
+    // console.log(this.conf);
+  }
 
-const server = http.createServer((req, res) => {
-  const filePath = path.join(conf.root, req.url);
-  route(req, res, filePath);
-});
-server.listen(conf.port, conf.hostname, () => {
-  const addr = `http://${conf.hostname}:${conf.port}`;
-  console.info(`Server started at ${addr}`)
-})
+  // 启动方法
+  start() {
+    const server = http.createServer((req, res) => {
+      const filePath = path.join(this.conf.root, req.url);
+      route(req, res, filePath, this.conf);
+    });
+    server.listen(this.conf.port, this.conf.hostname, () => {
+      const addr = `http://${this.conf.hostname}:${this.conf.port}`;
+      // console.info(`Server started at ${addr}`)
+      openUrl(addr);
+    })
+  }
+}
+
+module.exports = Server;

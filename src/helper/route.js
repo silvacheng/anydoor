@@ -5,7 +5,7 @@ const stat = promisify(fs.stat);
 const readdir = promisify(fs.readdir);
 const Handlebars = require('handlebars');
 const tplPath = path.join(__dirname, '../template/dir.tpl');
-const config = require('../config/defaultConfig');
+// const config = require('../config/defaultConfig');
 const mime = require('./mine');
 const compress = require('./compress'); // 压缩文件
 const range = require('./ranger');
@@ -13,12 +13,18 @@ const isFresh = require('./cache');
 const source = fs.readFileSync(tplPath);
 const template = Handlebars.compile(source.toString());
 
-module.exports = async function (req, res, filePath) {
+module.exports = async function (req, res, filePath, config) {
   try {
     const stats = await stat(filePath);
     if (stats.isFile()) {
       const contentType = mime(filePath);
       res.setHeader('Content-Type', contentType);
+      if(isFresh(stats, req, res)) {
+        res.statusCode = 304;
+        res.end();
+        return;
+      }
+
       // 将文本以流的形式  返回
       let rs;
       const { code, start, end } = range(stats.size, req, res);

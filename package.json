@@ -1,8 +1,11 @@
 {
   "name": "anydoor",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Tiny Nodejs Static Web Server",
-  "main": "index.js",
+  "main": "src/app.js",
+  "bin": {
+    "anydoor": "bin/anydoor"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
@@ -29,6 +32,7 @@
     "pre-commit": "^1.2.2"
   },
   "dependencies": {
-    "handlebars": "^4.0.12"
+    "handlebars": "^4.0.12",
+    "yargs": "^12.0.5"
   }
 }
